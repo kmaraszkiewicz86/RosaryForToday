@@ -1,6 +1,6 @@
 using SimpleCqrs;
 
-namespace RosaryForToday.Application.Queries;
+namespace RosaryForToday.Models.Queries;
 
 public class GetRosaryTypesQuery : IQuery<List<RosaryTypeDto>>
 {
