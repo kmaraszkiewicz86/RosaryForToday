@@ -12,5 +12,11 @@ public class LanguageConfiguration : IEntityTypeConfiguration<Language>
         builder.Property(e => e.Code).IsRequired().HasMaxLength(10);
         builder.Property(e => e.Name).IsRequired().HasMaxLength(100);
         builder.HasIndex(e => e.Code).IsUnique();
+
+        // Seed languages
+        builder.HasData(
+            new Language { Id = SeedDataIds.Languages.English, Code = "EN", Name = "English" },
+            new Language { Id = SeedDataIds.Languages.Polish, Code = "PL", Name = "Polski" }
+        );
     }
 }

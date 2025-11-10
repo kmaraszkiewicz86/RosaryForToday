@@ -22,17 +22,5 @@ public class RosaryDbContext : DbContext
         // Apply configurations from the assembly (types in RosaryForToday.Infrastructure.Data.Configuration)
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly(), t =>
             t.Namespace != null && t.Namespace.EndsWith(".Configuration"));
-
-        // Seed initial data
-        SeedData(modelBuilder);
-    }
-
-    private void SeedData(ModelBuilder modelBuilder)
-    {
-        // Seed Languages
-        modelBuilder.Entity<Language>().HasData(
-            new Language { Id = 1, Code = "en", Name = "English" },
-            new Language { Id = 2, Code = "pl", Name = "Polish" }
-        );
     }
 }
