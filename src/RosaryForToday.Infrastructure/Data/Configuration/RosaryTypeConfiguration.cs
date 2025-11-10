@@ -22,10 +22,10 @@ public class RosaryTypeConfiguration : IEntityTypeConfiguration<RosaryType>
     private void SeedData(EntityTypeBuilder<RosaryType> builder)
     {
         builder.HasData(
-            new RosaryType { Id = SeedDataIds.RosaryTypes.Joyful, Name = "Tajemnice Radosne", LanguageId = SeedDataIds.Languages.Polish },
-            new RosaryType { Id = SeedDataIds.RosaryTypes.Sorrowful, Name = "Tajemnice Bolesne", LanguageId = SeedDataIds.Languages.Polish },
-            new RosaryType { Id = SeedDataIds.RosaryTypes.Luminous, Name = "Tajemnice Œwiat³a", LanguageId = SeedDataIds.Languages.Polish },
-            new RosaryType { Id = SeedDataIds.RosaryTypes.Glorious, Name = "Tajemnice Chwalebne", LanguageId = SeedDataIds.Languages.Polish }
+            new RosaryType { Id = SeedDataIds.RosaryTypes.JoyfulPolish, Name = "Tajemnice Radosne", LanguageId = SeedDataIds.Languages.Polish },
+            new RosaryType { Id = SeedDataIds.RosaryTypes.SorrowfulPolish, Name = "Tajemnice Bolesne", LanguageId = SeedDataIds.Languages.Polish },
+            new RosaryType { Id = SeedDataIds.RosaryTypes.LuminousPolish, Name = "Tajemnice Œwiat³a", LanguageId = SeedDataIds.Languages.Polish },
+            new RosaryType { Id = SeedDataIds.RosaryTypes.GloriousPolish, Name = "Tajemnice Chwalebne", LanguageId = SeedDataIds.Languages.Polish }
         );
     }
 }
