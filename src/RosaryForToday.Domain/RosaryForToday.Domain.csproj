@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RosaryForToday.Models\RosaryForToday.Models.csproj" />
+  </ItemGroup>
+
 </Project>

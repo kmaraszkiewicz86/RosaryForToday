@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RosaryForToday.Domain\RosaryForToday.Domain.csproj" />
+    <ProjectReference Include="..\RosaryForToday.Models\RosaryForToday.Models.csproj" />
   </ItemGroup>
 
 </Project>

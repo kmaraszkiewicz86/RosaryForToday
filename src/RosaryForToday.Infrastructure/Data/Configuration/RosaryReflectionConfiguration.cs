@@ -50,7 +50,7 @@ public class RosaryReflectionConfiguration : IEntityTypeConfiguration<RosaryRefl
             new RosaryReflection { Id = 17, RosaryTypeId = SeedDataIds.RosaryTypes.GloriousPolish, Title = "Wniebowst¹pienie Pana", Content = "n/a", LanguageId = SeedDataIds.Languages.Polish },
             new RosaryReflection { Id = 18, RosaryTypeId = SeedDataIds.RosaryTypes.GloriousPolish, Title = "Zes³anie Ducha Œwiêtego", Content = "n/a", LanguageId = SeedDataIds.Languages.Polish },
             new RosaryReflection { Id = 19, RosaryTypeId = SeedDataIds.RosaryTypes.GloriousPolish, Title = "Wniebowziêcie Najœwiêtszej Maryi Panny", Content = "n/a", LanguageId = SeedDataIds.Languages.Polish },
-            new RosaryReflection { Id = 20, RosaryTypeId = SeedDataIds.RosaryTypes.GloriousPolish, Title = "Ukoronowanie Maryi na Królow¹ Nieba i Ziemi", Content = "n/a", LanguageId = SeedDataIds.Languages.Polish }
+            new RosaryReflection { Id = 20, RosaryTypeId = SeedDataIds.RosaryTypes.GloriousPolish, Title = "Ukoronowanie Maryi na Królow¹ Nieba i Ziemi", Content = "n/a", LanguageId = SeedDataIds.Languages.Polish },
 
 
             // English

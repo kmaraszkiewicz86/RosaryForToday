@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RosaryForToday.Infrastructure.Data;
-using RosaryForToday.Application.CommandHandlers;
 using RosaryForToday.Application.QueryHandlers;
+using RosaryForToday.Domain.DbQueries;
+using RosaryForToday.Infrastructure.Data;
+using RosaryForToday.Infrastructure.DbQueries;
+using SimpleCqrs;
 
 namespace RosaryForToday.Configuration;
 
@@ -17,8 +19,10 @@ public static class DependencyExtension
             opts.UseSqlite(connectionString));
 
         // Register application handlers (concrete registration so DI can resolve handlers)
-        services.AddScoped<CreateRosaryTypeCommandHandler>();
-        services.AddScoped<GetRosaryForTodayQueryHandler>();
+
+        // Register Rosary DB query
+        services.AddScoped<IRosaryDbQuery, RosaryDbQuery>();
+        services.AddScoped<ISimpleMediator>(scope => new SimpleMediator(typeof(GetRosaryForTodayQueryHandler).Assembly));
 
         // If you use AutoMapper, register here (optional)
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
