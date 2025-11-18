@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RosaryForToday.Domain\RosaryForToday.Domain.csproj" />
-    <ProjectReference Include="..\RosaryForToday.Application\RosaryForToday.Application.csproj" />
+    <ProjectReference Include="..\RosaryForToday.Application\RosaryForToday.ApplicationLayer.csproj" />
     <ProjectReference Include="..\RosaryForToday.Models\RosaryForToday.Models.csproj" />
   </ItemGroup>
 

@@ -5,7 +5,7 @@ VisualStudioVersion = 18.3.11206.111 d18.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosaryForToday.Domain", "RosaryForToday.Domain\RosaryForToday.Domain.csproj", "{8B6465BB-ACA0-4F92-8D4C-02B9B1B0A98A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosaryForToday.Application", "RosaryForToday.Application\RosaryForToday.Application.csproj", "{91317F0E-82C1-4B3F-8E04-21917E43E884}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosaryForToday.ApplicationLayer", "RosaryForToday.Application\RosaryForToday.ApplicationLayer.csproj", "{91317F0E-82C1-4B3F-8E04-21917E43E884}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosaryForToday.Infrastructure", "RosaryForToday.Infrastructure\RosaryForToday.Infrastructure.csproj", "{C33B11A7-4780-4E7D-85F8-29DBCED3040C}"
 EndProject

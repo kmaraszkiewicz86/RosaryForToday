@@ -2,7 +2,7 @@ using RosaryForToday.Domain.DbQueries;
 using RosaryForToday.Models.Dtos;
 using RosaryForToday.Models.Queries;
 
-namespace RosaryForToday.Application.QueryHandlers;
+namespace RosaryForToday.ApplicationLayer.QueryHandlers;
 
 public class GetRosaryForTodayQueryHandler(IRosaryDbQuery _dbQuery)
 {

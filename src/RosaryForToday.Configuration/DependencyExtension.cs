@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RosaryForToday.Application.QueryHandlers;
+using RosaryForToday.ApplicationLayer.QueryHandlers;
 using RosaryForToday.Domain.DbQueries;
 using RosaryForToday.Infrastructure.Data;
 using RosaryForToday.Infrastructure.DbQueries;

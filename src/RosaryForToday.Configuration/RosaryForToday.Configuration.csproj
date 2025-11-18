@@ -7,15 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.10" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.10" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\RosaryForToday.Domain\RosaryForToday.Domain.csproj" />
     <ProjectReference Include="..\RosaryForToday.Infrastructure\RosaryForToday.Infrastructure.csproj" />
-    <ProjectReference Include="..\RosaryForToday.Application\RosaryForToday.Application.csproj" />
+    <ProjectReference Include="..\RosaryForToday.Application\RosaryForToday.ApplicationLayer.csproj" />
     <ProjectReference Include="..\RosaryForToday.Models\RosaryForToday.Models.csproj" />
   </ItemGroup>
 
