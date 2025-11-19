@@ -28,4 +28,10 @@
 	  <ProjectReference Include="..\RosaryForToday.Application\RosaryForToday.ApplicationLayer.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <MauiXaml Update="Views\RosaryListView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 </Project>

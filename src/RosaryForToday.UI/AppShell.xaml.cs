@@ -1,10 +1,13 @@
-﻿namespace RosaryForToday.UI
+﻿using RosaryForToday.Presentation.Views;
+
+namespace RosaryForToday.UI;
+
+public partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    public AppShell(RosaryListView main)
     {
-        public AppShell()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+        // set main page
+        MainPage = main;
     }
 }
