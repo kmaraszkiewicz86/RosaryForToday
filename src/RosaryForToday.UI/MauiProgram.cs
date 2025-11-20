@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using RosaryForToday.Configuration;
 
 namespace RosaryForToday.UI
@@ -20,8 +21,9 @@ namespace RosaryForToday.UI
 			builder.Logging.AddDebug();
 #endif
 
-            var config = builder.Configuration;
-            builder.Services.AddRosaryForToday(config);
+            builder.Services
+                .AddViews()
+                .AddRequiredClasses(builder.Configuration);
 
             return builder.Build();
         }

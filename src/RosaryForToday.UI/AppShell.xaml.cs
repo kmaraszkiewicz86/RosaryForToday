@@ -4,10 +4,8 @@ namespace RosaryForToday.UI;
 
 public partial class AppShell : Shell
 {
-    public AppShell(RosaryListView main)
+    public AppShell()
     {
         InitializeComponent();
-        // set main page
-        MainPage = main;
     }
 }
