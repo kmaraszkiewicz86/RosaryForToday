@@ -3,9 +3,6 @@ using RosaryForToday.Domain.DbQueries;
 using RosaryForToday.Infrastructure.Data;
 using RosaryForToday.Models.Dtos;
 using RosaryForToday.Models.Enums;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace RosaryForToday.Infrastructure.DbQueries;
 
@@ -20,7 +17,19 @@ public class RosaryDbQuery : IRosaryDbQuery
 
     public async Task<RosaryForTodayDto?> GetRosaryForDateAsync(LanguageTypeEnum language, System.DateTime date, CancellationToken ct = default)
     {
-        var targetDay = date.DayOfWeek;
+        DayOfWeek targetDay = date.DayOfWeek;
+
+        string dayNameText = targetDay switch
+        {
+            DayOfWeek.Monday => "Poniedzia³ek",
+            DayOfWeek.Tuesday => "Wtorek",
+            DayOfWeek.Wednesday => "Œroda",
+            DayOfWeek.Thursday => "Czwartek",
+            DayOfWeek.Friday => "Pi¹tek",
+            DayOfWeek.Saturday => "Sobota",
+            DayOfWeek.Sunday => "Niedziela",
+            _ => targetDay.ToString()
+        };
 
         var schedule = await _db.RosaryDaySchedules
             .Include(s => s.RosaryType)
@@ -39,14 +48,14 @@ public class RosaryDbQuery : IRosaryDbQuery
             RosaryTypeId = schedule.RosaryType.Id,
             RosaryTypeName = schedule.RosaryType.Name,
             Description = string.Empty,
-            DayOfWeek = targetDay,
-            RosaryReflections = [.. reflectionEntities.Select(r => new RosaryReflectionDto
+            DayOfWeek = dayNameText,
+            RosaryReflections = reflectionEntities.Select(r => new RosaryReflectionDto
             {
                 Id = r.Id,
                 RosaryTypeId = r.RosaryTypeId,
                 Title = r.Title,
                 Content = r.Content
-            })]
+            }).ToArray()
         };
 
         return result;
