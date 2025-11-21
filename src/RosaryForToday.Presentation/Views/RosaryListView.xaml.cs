@@ -17,4 +17,3 @@ public partial class RosaryListView : ContentPage
             await vm.LoadAsync();
     }
 }
-        

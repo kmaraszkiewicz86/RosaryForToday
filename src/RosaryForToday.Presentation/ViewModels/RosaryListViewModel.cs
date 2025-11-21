@@ -10,6 +10,7 @@ public class RosaryListViewModel : BindableObject
 {
     private readonly IRosaryDbQuery _dbQuery;
     private string? _errorMessage;
+    private bool _showDetails = false;
 
     public ObservableCollection<RosaryForTodayDto> Items { get; } = new();
 
@@ -24,12 +25,26 @@ public class RosaryListViewModel : BindableObject
         }
     }
 
+    public bool ShowDetails
+    {
+        get => _showDetails;
+        set
+        {
+            if (_showDetails == value) return;
+            _showDetails = value;
+            OnPropertyChanged();
+        }
+    }
+
     public ICommand RefreshCommand { get; }
+
+    public ICommand ToggleDetailsCommand { get; }
 
     public RosaryListViewModel(IRosaryDbQuery dbQuery)
     {
         _dbQuery = dbQuery;
         RefreshCommand = new Command(async () => await RefreshAsync());
+        ToggleDetailsCommand = new Command(ToggleDetails);
     }
 
     public async Task LoadAsync()
@@ -52,6 +67,11 @@ public class RosaryListViewModel : BindableObject
         {
             ErrorMessage = $"B³¹d: {ex.Message}";
         }
+    }
+
+    private void ToggleDetails()
+    {
+        ShowDetails = !ShowDetails;
     }
 
     private async Task RefreshAsync()
