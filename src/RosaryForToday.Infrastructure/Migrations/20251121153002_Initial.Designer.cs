@@ -10,7 +10,7 @@ using RosaryForToday.Infrastructure.Data;
 namespace RosaryForToday.Infrastructure.Migrations
 {
     [DbContext(typeof(RosaryDbContext))]
-    [Migration("20251120185437_Initial")]
+    [Migration("20251121153002_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -578,6 +578,30 @@ namespace RosaryForToday.Infrastructure.Migrations
                             Id = 4,
                             LanguageId = 2,
                             Name = "Tajemnice Chwalebne"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            LanguageId = 1,
+                            Name = "Joyful Mysteries"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            LanguageId = 1,
+                            Name = "Sorrowful Mysteries"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            LanguageId = 1,
+                            Name = "Luminous Mysteries"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            LanguageId = 1,
+                            Name = "Glorious Mysteries"
                         });
                 });
 

@@ -111,47 +111,6 @@ namespace RosaryForToday.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "RosaryDaySchedules",
-                columns: new[] { "Id", "DayOfWeek", "LanguageId", "RosaryTypeId" },
-                values: new object[,]
-                {
-                    { 2, 1, 1, 5 },
-                    { 4, 2, 1, 6 },
-                    { 6, 3, 1, 8 },
-                    { 8, 4, 1, 7 },
-                    { 10, 5, 1, 6 },
-                    { 12, 6, 1, 5 },
-                    { 14, 0, 1, 8 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "RosaryReflections",
-                columns: new[] { "Id", "Content", "LanguageId", "RosaryTypeId", "Title" },
-                values: new object[,]
-                {
-                    { 21, "n/a", 1, 5, "The Annunciation" },
-                    { 22, "n/a", 1, 5, "The Visitation" },
-                    { 23, "n/a", 1, 5, "The Nativity (Birth of Our Lord)" },
-                    { 24, "n/a", 1, 5, "The Presentation" },
-                    { 25, "n/a", 1, 5, "The Finding in the Temple" },
-                    { 26, "n/a", 1, 6, "The Agony in the Garden" },
-                    { 27, "n/a", 1, 6, "The Scourging at the Pillar" },
-                    { 28, "n/a", 1, 6, "The Crowning with Thorns" },
-                    { 29, "n/a", 1, 6, "The Carrying of the Cross" },
-                    { 30, "n/a", 1, 6, "The Crucifixion and Death of Our Lord" },
-                    { 31, "n/a", 1, 7, "The Baptism of Jesus in the Jordan" },
-                    { 32, "n/a", 1, 7, "The Wedding at Cana" },
-                    { 33, "n/a", 1, 7, "The Proclamation of the Kingdom of God" },
-                    { 34, "n/a", 1, 7, "The Transfiguration" },
-                    { 35, "n/a", 1, 7, "The Institution of the Eucharist" },
-                    { 36, "n/a", 1, 8, "The Resurrection" },
-                    { 37, "n/a", 1, 8, "The Ascension" },
-                    { 38, "n/a", 1, 8, "The Descent of the Holy Spirit (Pentecost)" },
-                    { 39, "n/a", 1, 8, "The Assumption of the Blessed Virgin Mary" },
-                    { 40, "n/a", 1, 8, "The Coronation of the Blessed Virgin Mary as Queen of Heaven and Earth" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "RosaryTypes",
                 columns: new[] { "Id", "LanguageId", "Name" },
                 values: new object[,]
@@ -159,7 +118,11 @@ namespace RosaryForToday.Infrastructure.Migrations
                     { 1, 2, "Tajemnice Radosne" },
                     { 2, 2, "Tajemnice Bolesne" },
                     { 3, 2, "Tajemnice Światła" },
-                    { 4, 2, "Tajemnice Chwalebne" }
+                    { 4, 2, "Tajemnice Chwalebne" },
+                    { 5, 1, "Joyful Mysteries" },
+                    { 6, 1, "Sorrowful Mysteries" },
+                    { 7, 1, "Luminous Mysteries" },
+                    { 8, 1, "Glorious Mysteries" }
                 });
 
             migrationBuilder.InsertData(
@@ -168,12 +131,19 @@ namespace RosaryForToday.Infrastructure.Migrations
                 values: new object[,]
                 {
                     { 1, 1, 2, 1 },
+                    { 2, 1, 1, 5 },
                     { 3, 2, 2, 2 },
+                    { 4, 2, 1, 6 },
                     { 5, 3, 2, 4 },
+                    { 6, 3, 1, 8 },
                     { 7, 4, 2, 3 },
+                    { 8, 4, 1, 7 },
                     { 9, 5, 2, 2 },
+                    { 10, 5, 1, 6 },
                     { 11, 6, 2, 1 },
-                    { 13, 0, 2, 4 }
+                    { 12, 6, 1, 5 },
+                    { 13, 0, 2, 4 },
+                    { 14, 0, 1, 8 }
                 });
 
             migrationBuilder.InsertData(
@@ -200,7 +170,27 @@ namespace RosaryForToday.Infrastructure.Migrations
                     { 17, "n/a", 2, 4, "Wniebowstąpienie Pana" },
                     { 18, "n/a", 2, 4, "Zesłanie Ducha Świętego" },
                     { 19, "n/a", 2, 4, "Wniebowzięcie Najświętszej Maryi Panny" },
-                    { 20, "n/a", 2, 4, "Ukoronowanie Maryi na Królową Nieba i Ziemi" }
+                    { 20, "n/a", 2, 4, "Ukoronowanie Maryi na Królową Nieba i Ziemi" },
+                    { 21, "n/a", 1, 5, "The Annunciation" },
+                    { 22, "n/a", 1, 5, "The Visitation" },
+                    { 23, "n/a", 1, 5, "The Nativity (Birth of Our Lord)" },
+                    { 24, "n/a", 1, 5, "The Presentation" },
+                    { 25, "n/a", 1, 5, "The Finding in the Temple" },
+                    { 26, "n/a", 1, 6, "The Agony in the Garden" },
+                    { 27, "n/a", 1, 6, "The Scourging at the Pillar" },
+                    { 28, "n/a", 1, 6, "The Crowning with Thorns" },
+                    { 29, "n/a", 1, 6, "The Carrying of the Cross" },
+                    { 30, "n/a", 1, 6, "The Crucifixion and Death of Our Lord" },
+                    { 31, "n/a", 1, 7, "The Baptism of Jesus in the Jordan" },
+                    { 32, "n/a", 1, 7, "The Wedding at Cana" },
+                    { 33, "n/a", 1, 7, "The Proclamation of the Kingdom of God" },
+                    { 34, "n/a", 1, 7, "The Transfiguration" },
+                    { 35, "n/a", 1, 7, "The Institution of the Eucharist" },
+                    { 36, "n/a", 1, 8, "The Resurrection" },
+                    { 37, "n/a", 1, 8, "The Ascension" },
+                    { 38, "n/a", 1, 8, "The Descent of the Holy Spirit (Pentecost)" },
+                    { 39, "n/a", 1, 8, "The Assumption of the Blessed Virgin Mary" },
+                    { 40, "n/a", 1, 8, "The Coronation of the Blessed Virgin Mary as Queen of Heaven and Earth" }
                 });
 
             migrationBuilder.CreateIndex(

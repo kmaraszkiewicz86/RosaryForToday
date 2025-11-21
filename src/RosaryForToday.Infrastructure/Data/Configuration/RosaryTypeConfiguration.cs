@@ -25,7 +25,12 @@ public class RosaryTypeConfiguration : IEntityTypeConfiguration<RosaryType>
             new RosaryType { Id = SeedDataIds.RosaryTypes.JoyfulPolish, Name = "Tajemnice Radosne", LanguageId = SeedDataIds.Languages.Polish },
             new RosaryType { Id = SeedDataIds.RosaryTypes.SorrowfulPolish, Name = "Tajemnice Bolesne", LanguageId = SeedDataIds.Languages.Polish },
             new RosaryType { Id = SeedDataIds.RosaryTypes.LuminousPolish, Name = "Tajemnice Œwiat³a", LanguageId = SeedDataIds.Languages.Polish },
-            new RosaryType { Id = SeedDataIds.RosaryTypes.GloriousPolish, Name = "Tajemnice Chwalebne", LanguageId = SeedDataIds.Languages.Polish }
+            new RosaryType { Id = SeedDataIds.RosaryTypes.GloriousPolish, Name = "Tajemnice Chwalebne", LanguageId = SeedDataIds.Languages.Polish },
+
+            new RosaryType { Id = SeedDataIds.RosaryTypes.JoyfulEnglish, Name = "Joyful Mysteries", LanguageId = SeedDataIds.Languages.English },
+            new RosaryType { Id = SeedDataIds.RosaryTypes.SorrowfulEnglish, Name = "Sorrowful Mysteries", LanguageId = SeedDataIds.Languages.English },
+            new RosaryType { Id = SeedDataIds.RosaryTypes.LuminousEnglish, Name = "Luminous Mysteries", LanguageId = SeedDataIds.Languages.English },
+            new RosaryType { Id = SeedDataIds.RosaryTypes.GloriousEnglish, Name = "Glorious Mysteries", LanguageId = SeedDataIds.Languages.English }
         );
     }
 }

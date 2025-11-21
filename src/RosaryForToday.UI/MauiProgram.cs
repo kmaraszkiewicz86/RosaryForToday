@@ -21,9 +21,12 @@ namespace RosaryForToday.UI
 			builder.Logging.AddDebug();
 #endif
 
+            string path = Path.Combine(FileSystem.AppDataDirectory, $"{nameof(RosaryForToday)}Db");
+
             builder.Services
+                .ConfigureDatabase(path)
                 .AddViews()
-                .AddRequiredClasses(builder.Configuration);
+                .AddRequiredClasses();
 
             return builder.Build();
         }

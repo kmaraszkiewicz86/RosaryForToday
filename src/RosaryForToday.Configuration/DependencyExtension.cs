@@ -12,22 +12,34 @@ namespace RosaryForToday.Configuration;
 public static class DependencyExtension
 {
     /// <summary>
-    /// Registers required application services, including database context, query interfaces, mediator, and optional
-    /// AutoMapper, into the specified service collection.
+    /// Configures the database context and applies pending migrations automatically.
     /// </summary>
-    /// <remarks>This method configures the application's dependency injection container with essential
-    /// services for database access, query handling, and mediation. If AutoMapper is used in the application, it is
-    /// also registered with all loaded assemblies. The database context is configured to use a SQLite connection,
-    /// defaulting to 'Data Source=rosary.db' if no connection string is provided.</remarks>
-    /// <param name="services">The service collection to which the required classes and dependencies will be added.</param>
+    /// <param name="services">The service collection to which the database context will be added.</param>
     /// <param name="configuration">The application configuration used to retrieve the database connection string.</param>
-    /// <returns>The updated service collection containing the registered services.</returns>
-    public static IServiceCollection AddRequiredClasses(this IServiceCollection services, IConfiguration configuration)
+    /// <returns>The updated service collection with the configured database context.</returns>
+    /// <remarks>
+    /// This method registers the RosaryDbContext with SQLite using either the connection string from configuration
+    /// or a default "Data Source=rosary.db" value. After registration, it automatically applies any pending EF Core migrations.
+    /// </remarks>
+    public static IServiceCollection ConfigureDatabase(this IServiceCollection services, string dbPath)
     {
-        var connectionString = configuration.GetConnectionString("Default") ?? "Data Source=rosary.db";
+        var connectionString = $"Data Source={dbPath}";
+
         services.AddDbContext<RosaryDbContext>(opts =>
             opts.UseSqlite(connectionString));
 
+        services.MigrateDatabase();
+
+        return services;
+    }
+
+    /// <summary>
+    /// Registers application-level services including database queries, mediator, and AutoMapper into the dependency injection container.
+    /// </summary>
+    /// <param name="services">The service collection to which the application services will be added.</param>
+    /// <returns>The updated service collection containing the registered application services.</returns>
+    public static IServiceCollection AddRequiredClasses(this IServiceCollection services)
+    {
         // Register Rosary DB query
         services.AddScoped<IRosaryDbQuery, RosaryDbQuery>();
 
@@ -36,6 +48,15 @@ public static class DependencyExtension
 
         // If you use AutoMapper, register here (optional)
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+        return services;
+    }
+
+    private static IServiceCollection MigrateDatabase(this IServiceCollection services)
+    {
+        using var scope = services.BuildServiceProvider().CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<RosaryDbContext>();
+        db.Database.Migrate();
 
         return services;
     }
