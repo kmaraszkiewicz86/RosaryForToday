@@ -4,7 +4,7 @@ using SimpleCqrs;
 
 namespace RosaryForToday.Models.Queries;
 
-public class GetAllRosariesQuery : IQuery<IEnumerable<RosaryForTodayDto>>
+public class GetAllRosariesQuery : IQuery<IEnumerable<RosaryDto>>
 {
     public LanguageTypeEnum Language { get; set; }
 }

@@ -15,25 +15,14 @@ public class RosaryDbQuery : IRosaryDbQuery
         _db = db;
     }
 
-    public async Task<RosaryForTodayDto?> GetRosaryForDateAsync(LanguageTypeEnum language, System.DateTime date, CancellationToken ct = default)
+    public async Task<RosaryDto?> GetRosaryForDateAsync(LanguageTypeEnum language, CancellationToken ct = default)
     {
-        DayOfWeek targetDay = date.DayOfWeek;
-
-        string dayNameText = targetDay switch
-        {
-            DayOfWeek.Monday => "Poniedzia³ek",
-            DayOfWeek.Tuesday => "Wtorek",
-            DayOfWeek.Wednesday => "Œroda",
-            DayOfWeek.Thursday => "Czwartek",
-            DayOfWeek.Friday => "Pi¹tek",
-            DayOfWeek.Saturday => "Sobota",
-            DayOfWeek.Sunday => "Niedziela",
-            _ => targetDay.ToString()
-        };
+        DateTime date = DateTime.UtcNow;
+        string dayNameText = GetPolishDayName(date.DayOfWeek);
 
         var schedule = await _db.RosaryDaySchedules
             .Include(s => s.RosaryType)
-            .Where(s => s.DayOfWeek == targetDay && s.LanguageId == (int)language)
+            .Where(s => s.DayOfWeek == date.DayOfWeek && s.LanguageId == (int)language)
             .Select(s => new { s.RosaryTypeId, s.RosaryType })
             .FirstOrDefaultAsync(ct);
 
@@ -43,11 +32,10 @@ public class RosaryDbQuery : IRosaryDbQuery
             .Where(r => r.RosaryTypeId == schedule.RosaryTypeId && r.LanguageId == (int)language)
             .ToListAsync(ct);
 
-        RosaryForTodayDto result = new()
+        RosaryDto result = new()
         {
             RosaryTypeId = schedule.RosaryType.Id,
             RosaryTypeName = schedule.RosaryType.Name,
-            Description = string.Empty,
             DayOfWeek = dayNameText,
             RosaryReflections = reflectionEntities.Select(r => new RosaryReflectionDto
             {
@@ -61,9 +49,9 @@ public class RosaryDbQuery : IRosaryDbQuery
         return result;
     }
 
-    public async Task<IEnumerable<RosaryForTodayDto>> GetAllRosariesExceptDateAsync(LanguageTypeEnum language, System.DateTime date, CancellationToken ct = default)
+    public async Task<IEnumerable<RosaryDto>> GetAllRosariesExceptDateAsync(LanguageTypeEnum language, CancellationToken ct = default)
     {
-        DayOfWeek excludeDay = date.DayOfWeek;
+        DayOfWeek excludeDay = DateTime.UtcNow.DayOfWeek;
 
         // load schedules for given language excluding the target day, include RosaryType navigation
         var schedules = await _db.RosaryDaySchedules
@@ -72,7 +60,7 @@ public class RosaryDbQuery : IRosaryDbQuery
             .ToListAsync(ct);
 
         if (schedules == null || schedules.Count == 0)
-            return Enumerable.Empty<RosaryForTodayDto>();
+            return Enumerable.Empty<RosaryDto>();
 
         // distinct rosary type ids from schedules
         var rosaryTypeIds = schedules.Select(s => s.RosaryTypeId).Distinct().ToList();
@@ -82,23 +70,12 @@ public class RosaryDbQuery : IRosaryDbQuery
             .Where(r => rosaryTypeIds.Contains(r.RosaryTypeId) && r.LanguageId == (int)language)
             .ToListAsync(ct);
 
-        var results = new List<RosaryForTodayDto>();
+        var results = new List<RosaryDto>();
 
         foreach (var group in schedules.GroupBy(s => s.RosaryTypeId))
         {
             var schedule = group.First();
-            var targetDay = schedule.DayOfWeek;
-            string dayNameText = targetDay switch
-            {
-                DayOfWeek.Monday => "Poniedzia³ek",
-                DayOfWeek.Tuesday => "Wtorek",
-                DayOfWeek.Wednesday => "Œroda",
-                DayOfWeek.Thursday => "Czwartek",
-                DayOfWeek.Friday => "Pi¹tek",
-                DayOfWeek.Saturday => "Sobota",
-                DayOfWeek.Sunday => "Niedziela",
-                _ => targetDay.ToString()
-            };
+            string dayNameText = GetPolishDayName(schedule.DayOfWeek);
 
             var reflectionsForType = reflectionEntities
                 .Where(r => r.RosaryTypeId == group.Key)
@@ -110,11 +87,10 @@ public class RosaryDbQuery : IRosaryDbQuery
                     Content = r.Content
                 }).ToArray();
 
-            results.Add(new RosaryForTodayDto
+            results.Add(new RosaryDto
             {
                 RosaryTypeId = schedule.RosaryType.Id,
                 RosaryTypeName = schedule.RosaryType.Name,
-                Description = string.Empty,
                 DayOfWeek = dayNameText,
                 RosaryReflections = reflectionsForType
             });
@@ -123,61 +99,18 @@ public class RosaryDbQuery : IRosaryDbQuery
         return results;
     }
 
-    public async Task<IEnumerable<RosaryForTodayDto>> GetAllRosariesAsync(LanguageTypeEnum language, CancellationToken ct = default)
+    private string GetPolishDayName(DayOfWeek dayOfWeek)
     {
-        // load all schedules for language including RosaryType
-        var schedules = await _db.RosaryDaySchedules
-            .Include(s => s.RosaryType)
-            .Where(s => s.LanguageId == (int)language)
-            .ToListAsync(ct);
-
-        if (schedules == null || schedules.Count == 0)
-            return Enumerable.Empty<RosaryForTodayDto>();
-
-        var rosaryTypeIds = schedules.Select(s => s.RosaryTypeId).Distinct().ToList();
-
-        var reflectionEntities = await _db.RosaryReflections
-            .Where(r => rosaryTypeIds.Contains(r.RosaryTypeId) && r.LanguageId == (int)language)
-            .ToListAsync(ct);
-
-        var results = new List<RosaryForTodayDto>();
-
-        foreach (var group in schedules.GroupBy(s => s.RosaryTypeId))
+        return dayOfWeek switch
         {
-            var schedule = group.First();
-            var targetDay = schedule.DayOfWeek;
-            string dayNameText = targetDay switch
-            {
-                DayOfWeek.Monday => "Poniedzia³ek",
-                DayOfWeek.Tuesday => "Wtorek",
-                DayOfWeek.Wednesday => "Œroda",
-                DayOfWeek.Thursday => "Czwartek",
-                DayOfWeek.Friday => "Pi¹tek",
-                DayOfWeek.Saturday => "Sobota",
-                DayOfWeek.Sunday => "Niedziela",
-                _ => targetDay.ToString()
-            };
-
-            var reflectionsForType = reflectionEntities
-                .Where(r => r.RosaryTypeId == group.Key)
-                .Select(r => new RosaryReflectionDto
-                {
-                    Id = r.Id,
-                    RosaryTypeId = r.RosaryTypeId,
-                    Title = r.Title,
-                    Content = r.Content
-                }).ToArray();
-
-            results.Add(new RosaryForTodayDto
-            {
-                RosaryTypeId = schedule.RosaryType.Id,
-                RosaryTypeName = schedule.RosaryType.Name,
-                Description = string.Empty,
-                DayOfWeek = dayNameText,
-                RosaryReflections = reflectionsForType
-            });
-        }
-
-        return results;
+            DayOfWeek.Monday => "Poniedzia³ek",
+            DayOfWeek.Tuesday => "Wtorek",
+            DayOfWeek.Wednesday => "Œroda",
+            DayOfWeek.Thursday => "Czwartek",
+            DayOfWeek.Friday => "Pi¹tek",
+            DayOfWeek.Saturday => "Sobota",
+            DayOfWeek.Sunday => "Niedziela",
+            _ => dayOfWeek.ToString()
+        };
     }
 }
