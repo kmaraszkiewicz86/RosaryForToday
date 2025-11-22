@@ -110,7 +110,7 @@ public class RosaryListViewModel : BindableObject
             // initialize toggling command on each item if required
             if (rosaryViewModel is not null)
             {
-                Items.Add(rosaryViewModel);
+                AllItems.Add(rosaryViewModel);
             }
         }
     }
@@ -118,6 +118,7 @@ public class RosaryListViewModel : BindableObject
     private async Task RefreshAsync()
     {
         Items.Clear();
-        await LoadTodayRosariesAsync();
+        AllItems.Clear();
+        await LoadAsync();
     }
 }
