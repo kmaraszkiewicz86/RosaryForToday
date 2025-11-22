@@ -75,10 +75,10 @@
                 </Label>
 
                 <!-- Simple tab buttons -->
-                <HorizontalStackLayout Spacing="0" Padding="8,6,8,6">
-                    <Button Text="Dzisiaj" Command="{Binding ShowTodayCommand}" Margin="5" />
-                    <Button Text="Wszystkie" Command="{Binding ShowAllCommand}" Margin="5" />
-                </HorizontalStackLayout>
+                <Grid ColumnDefinitions="*,*" Padding="8,6,8,6">
+                    <Button Grid.Column="0" Text="Dzisiaj" Command="{Binding ShowTodayCommand}" Margin="5" />
+                    <Button Grid.Column="1" Text="Wszystkie" Command="{Binding ShowAllCommand}" Margin="5" />
+                </Grid>
             </StackLayout>
 
             <!-- Two CollectionViews: one for today's Items, one for AllItems. Visibility toggled by ViewModel.ShowAllItems -->

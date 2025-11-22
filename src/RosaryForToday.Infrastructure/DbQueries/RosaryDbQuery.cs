@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RosaryForToday.Domain.DbQueries;
+using RosaryForToday.Domain.Entities;
 using RosaryForToday.Infrastructure.Data;
 using RosaryForToday.Models.Dtos;
 using RosaryForToday.Models.Enums;
@@ -53,10 +54,13 @@ public class RosaryDbQuery : IRosaryDbQuery
     {
         DayOfWeek excludeDay = DateTime.UtcNow.DayOfWeek;
 
+        RosaryType? excludeRosaryType = await _db.RosaryTypes.Include(r => r.RosaryDaySchedules)
+            .FirstOrDefaultAsync(r => r.RosaryDaySchedules.Any(s => s.LanguageId == (int)language && s.DayOfWeek == excludeDay));
+
         // load schedules for given language excluding the target day, include RosaryType navigation
         var schedules = await _db.RosaryDaySchedules
             .Include(s => s.RosaryType)
-            .Where(s => s.LanguageId == (int)language && s.DayOfWeek != excludeDay)
+            .Where(s => s.LanguageId == (int)language && s.RosaryType.Id != excludeRosaryType!.Id)
             .ToListAsync(ct);
 
         if (schedules == null || schedules.Count == 0)
@@ -75,7 +79,16 @@ public class RosaryDbQuery : IRosaryDbQuery
         foreach (var group in schedules.GroupBy(s => s.RosaryTypeId))
         {
             var schedule = group.First();
-            string dayNameText = GetPolishDayName(schedule.DayOfWeek);
+            var dayOfWeeks = schedules
+                .Where(s => s.RosaryTypeId == schedule.RosaryTypeId)
+                .Select(s => s.DayOfWeek);
+
+            List<string> dayNameTexts = new();
+
+            foreach(var dayOfWeek in dayOfWeeks)
+            {
+                dayNameTexts.Add(GetPolishDayName(dayOfWeek));
+            }
 
             var reflectionsForType = reflectionEntities
                 .Where(r => r.RosaryTypeId == group.Key)
@@ -91,7 +104,7 @@ public class RosaryDbQuery : IRosaryDbQuery
             {
                 RosaryTypeId = schedule.RosaryType.Id,
                 RosaryTypeName = schedule.RosaryType.Name,
-                DayOfWeek = dayNameText,
+                DayOfWeek = string.Join(',', dayNameTexts),
                 RosaryReflections = reflectionsForType
             });
         }
