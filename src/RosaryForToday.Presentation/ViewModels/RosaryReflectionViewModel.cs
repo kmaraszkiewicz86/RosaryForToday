@@ -1,6 +1,6 @@
 namespace RosaryForToday.Presentation.ViewModels;
 
-public class RosaryReflectionViewModel
+public class RosaryReflectionViewModel : DetailsBaseViewModel
 {
     public int Id { get; set; }
     public int RosaryTypeId { get; set; }
