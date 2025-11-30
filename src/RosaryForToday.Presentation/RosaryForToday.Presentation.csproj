@@ -35,9 +35,4 @@
 	  </MauiXaml>
 	</ItemGroup>
 
-	<!-- Ensure Converters folder is compiled (some SDK setups may not auto-include new folders) -->
-	<ItemGroup>
-	 <Compile Include="Converters\**\*.cs" />
-	</ItemGroup>
-
 </Project>
