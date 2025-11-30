@@ -27,7 +27,7 @@
                     </CollectionView>
 
                     <!-- Toggle button to show/hide full descriptions -->
-                    <Button Text="Pokaż / ukryj opisy" HorizontalOptions="End"
+                    <Button Text="{Binding ButtonName}" HorizontalOptions="End"
                             Command="{Binding ToggleDetailsCommand}" />
 
                     <!-- Collapsible detailed reflections (titles + content) -->

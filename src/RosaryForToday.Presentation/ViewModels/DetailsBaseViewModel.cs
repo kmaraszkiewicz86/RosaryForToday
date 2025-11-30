@@ -4,7 +4,7 @@ public abstract class DetailsBaseViewModel : BindableObject
 {
     private bool _showDetails = false;
 
-    public string ButtonName => ShowDetails ? "Ukryj" : "Poka¿";
+    public string ButtonName => ShowDetails ? ButtonHideText : ButtonShowText;
 
     public bool ShowDetails
     {
@@ -19,6 +19,9 @@ public abstract class DetailsBaseViewModel : BindableObject
     }
 
     public ICommand ToggleDetailsCommand { get; }
+
+    protected abstract string ButtonShowText { get; }
+    protected abstract string ButtonHideText { get; }
 
     public DetailsBaseViewModel()
     {

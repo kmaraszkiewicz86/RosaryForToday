@@ -8,4 +8,8 @@ public class RosaryViewModel : DetailsBaseViewModel
     public string Description { get; set; } = string.Empty;
     public string DayOfWeek { get; set; } = string.Empty;
     public RosaryReflectionViewModel[] RosaryReflections { get; set; } = Array.Empty<RosaryReflectionViewModel>();
+
+    protected override string ButtonShowText => "Poka¿";
+
+    protected override string ButtonHideText => "Ukryj";
 }
