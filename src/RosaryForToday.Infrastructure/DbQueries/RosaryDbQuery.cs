@@ -50,7 +50,7 @@ public class RosaryDbQuery : IRosaryDbQuery
         return result;
     }
 
-    public async Task<IEnumerable<RosaryDto>> GetAllRosariesExceptDateAsync(LanguageTypeEnum language, CancellationToken ct = default)
+    public async Task<IEnumerable<RosaryDto>> GetAllRosariesExceptTodayAsync(LanguageTypeEnum language, CancellationToken ct = default)
     {
         DayOfWeek excludeDay = DateTime.UtcNow.DayOfWeek;
 

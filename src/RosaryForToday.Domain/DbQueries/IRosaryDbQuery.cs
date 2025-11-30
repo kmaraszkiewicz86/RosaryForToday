@@ -7,5 +7,5 @@ public interface IRosaryDbQuery
 {
     Task<RosaryDto?> GetRosaryForDateAsync(LanguageTypeEnum language, CancellationToken ct = default);
 
-    Task<IEnumerable<RosaryDto>> GetAllRosariesExceptDateAsync(LanguageTypeEnum language, CancellationToken ct = default);
+    Task<IEnumerable<RosaryDto>> GetAllRosariesExceptTodayAsync(LanguageTypeEnum language, CancellationToken ct = default);
 }

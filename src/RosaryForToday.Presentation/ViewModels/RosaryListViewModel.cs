@@ -1,17 +1,20 @@
+using RosaryForToday.ApplicationLayer.QueryHandlers;
 using RosaryForToday.Domain.DbQueries;
+using RosaryForToday.Domain.Entities;
 using RosaryForToday.Models.Dtos;
 using RosaryForToday.Models.Enums;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-using RosaryForToday.ApplicationLayer.QueryHandlers;
 using RosaryForToday.Models.Queries;
 using RosaryForToday.Presentation.Mappers;
+using SimpleCqrs;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace RosaryForToday.Presentation.ViewModels;
 
 public class RosaryListViewModel : BindableObject
 {
     private readonly IRosaryDbQuery _dbQuery;
+    private readonly ISimpleMediator _mediator;
     private string? _errorMessage;
     private bool _showAllItems = false;
 
@@ -47,9 +50,10 @@ public class RosaryListViewModel : BindableObject
     public ICommand ShowTodayCommand { get; }
     public ICommand ShowAllCommand { get; }
 
-    public RosaryListViewModel(IRosaryDbQuery dbQuery)
+    public RosaryListViewModel(IRosaryDbQuery dbQuery, ISimpleMediator mediator)
     {
         _dbQuery = dbQuery;
+        _mediator = mediator;
         RefreshCommand = new Command(async () => await RefreshAsync());
         ShowTodayCommand = new Command(() => ShowAllItems = false);
         ShowAllCommand = new Command(() => ShowAllItems = true);
@@ -75,7 +79,7 @@ public class RosaryListViewModel : BindableObject
         // Use query handlers instead of calling the DB query directly
         var todayHandler = new GetRosaryForTodayQueryHandler(_dbQuery);
         var todayQuery = new GetRosaryForTodayQuery { Language = LanguageTypeEnum.Polish };
-        RosaryDto? todayResult = await todayHandler.Handle(todayQuery);
+        RosaryDto? todayResult = await todayHandler.HandleAsync(todayQuery);
 
         if (todayResult is null)
         {
@@ -100,7 +104,7 @@ public class RosaryListViewModel : BindableObject
         // Load all rosaries into AllItems using GetAllRosariesQueryHandler
         GetAllRosariesQueryHandler allHandler = new(_dbQuery);
         GetAllRosariesQuery allQuery = new() { Language = LanguageTypeEnum.Polish };
-        IEnumerable<RosaryDto> allResults = await allHandler.Handle(allQuery);
+        IEnumerable<RosaryDto> allResults = await allHandler.HandleAsync(allQuery);
 
         AllItems.Clear();
         foreach (var rosary in allResults)
