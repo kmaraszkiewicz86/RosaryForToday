@@ -1,21 +1,17 @@
 using RosaryForToday.ApplicationLayer.QueryHandlers;
 using RosaryForToday.Domain.DbQueries;
-using RosaryForToday.Domain.Entities;
 using RosaryForToday.Models.Dtos;
 using RosaryForToday.Models.Enums;
 using RosaryForToday.Models.Queries;
 using RosaryForToday.Presentation.Mappers;
 using SimpleCqrs;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Windows.Input;
 
 namespace RosaryForToday.Presentation.ViewModels;
 
-public class RosaryListViewModel : BindableObject
+public class RosaryListViewModel(IRosaryDbQuery _dbQuery, ISimpleMediator _mediator) : BindableObject
 {
-    private readonly IRosaryDbQuery _dbQuery;
-    private readonly ISimpleMediator _mediator;
     private string? _errorMessage;
     private bool _showAllItems = false;
 
@@ -46,19 +42,11 @@ public class RosaryListViewModel : BindableObject
         }
     }
 
-    public ICommand RefreshCommand { get; }
+    public ICommand RefreshCommand => new Command(async () => await RefreshAsync());
+    public ICommand ShowCrashLogCommand => new Command(async () => await OnShowCrashLogAsync());
 
-    public ICommand ShowTodayCommand { get; }
-    public ICommand ShowAllCommand { get; }
-
-    public RosaryListViewModel(IRosaryDbQuery dbQuery, ISimpleMediator mediator)
-    {
-        _dbQuery = dbQuery;
-        _mediator = mediator;
-        RefreshCommand = new Command(async () => await RefreshAsync());
-        ShowTodayCommand = new Command(() => ShowAllItems = false);
-        ShowAllCommand = new Command(() => ShowAllItems = true);
-    }
+    public ICommand ShowTodayCommand => new Command(async () => await RefreshAsync());
+    public ICommand ShowAllCommand => new Command(async () => await RefreshAsync());
 
     public async Task LoadAsync()
     {
@@ -118,6 +106,12 @@ public class RosaryListViewModel : BindableObject
                 AllItems.Add(rosaryViewModel);
             }
         }
+    }
+
+    private async Task OnShowCrashLogAsync()
+    {
+        // Shell requires absolute route for ShellContent — prefix with "///"
+        await Shell.Current.GoToAsync("///CrashLog");
     }
 
     private async Task RefreshAsync()

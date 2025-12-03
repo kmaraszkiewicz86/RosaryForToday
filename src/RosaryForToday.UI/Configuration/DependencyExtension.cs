@@ -13,7 +13,9 @@ public static class DependencyExtension
     public static IServiceCollection AddViews(this IServiceCollection services)
     {
         services.AddTransient<RosaryListViewModel>();
+        services.AddTransient<CrashLogViewModel>();
         services.AddTransient<RosaryListView>();
+        services.AddTransient<CrashLogView>();
 
         return services;
     }

@@ -6,7 +6,7 @@ namespace RosaryForToday.Presentation.Helpers
     {
         public static string CrashLogPath => Path.Combine(FileSystem.AppDataDirectory, "crash.log");
 
-        public static async Task<string?> ReadCrashLogAsync()
+        public static async Task<string?> GetCrashLogAsync()
         {
             try
             {

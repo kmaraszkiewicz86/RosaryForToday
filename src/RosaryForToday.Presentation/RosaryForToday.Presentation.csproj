@@ -30,6 +30,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Views\CrashLogView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\RosaryListView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

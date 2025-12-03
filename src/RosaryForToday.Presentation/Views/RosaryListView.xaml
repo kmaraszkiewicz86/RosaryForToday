@@ -6,6 +6,13 @@
              x:Name="Root"
              Title="Różanniec na dzisiaj">
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Odśwież" Order="Primary" Priority="0"
+                     Command="{Binding RefreshCommand}" />
+        <ToolbarItem Text="Pokaż log" Order="Secondary" Priority="1"
+                     Command="{Binding ShowCrashLogCommand}" />
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Resources>
 
         <converters:BoolToIsVisibleConverter x:Key="BoolToIsVisible" />
@@ -68,10 +75,7 @@
         </DataTemplate>
     </ContentPage.Resources>
 
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Odśwież" Order="Primary" Priority="0"
-                     Command="{Binding RefreshCommand}" />
-    </ContentPage.ToolbarItems>
+
 
     <ContentPage.Content>
         <Grid RowDefinitions="Auto, *">

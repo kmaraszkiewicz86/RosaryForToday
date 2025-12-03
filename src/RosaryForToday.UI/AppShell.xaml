@@ -11,4 +11,9 @@
         ContentTemplate="{DataTemplate views:RosaryListView}"
         Route="MainPage" />
 
+    <ShellContent
+        Title="Crash log list"
+        ContentTemplate="{DataTemplate views:CrashLogView}"
+        Route="CrashLog" />
+
 </Shell>
