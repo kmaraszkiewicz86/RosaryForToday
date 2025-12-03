@@ -7,7 +7,6 @@ public class RosaryReflectionViewModel : DetailsBaseViewModel
     public string Title { get; set; } = string.Empty;
     public string Content { get; set; } = string.Empty;
 
-    protected override string ButtonShowText => "Poka¿ tajemnice";
-
-    protected override string ButtonHideText => "Ukryj tajemnice";
+    protected override string ButtonShowText => "+";
+    protected override string ButtonHideText => "-";
 }

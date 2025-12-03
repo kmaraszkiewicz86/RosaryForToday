@@ -7,6 +7,9 @@
              Title="Różanniec na dzisiaj">
 
     <ContentPage.Resources>
+
+        <converters:BoolToIsVisibleConverter x:Key="BoolToIsVisible" />
+
         <DataTemplate x:Key="RosaryItemTemplate">
             <Border Margin="10" Padding="10" Stroke="#555" Background="#444">
                 <Border.StrokeShape>
@@ -43,16 +46,16 @@
                                         <Grid ColumnDefinitions="*, Auto">
                                             <Label Grid.Column="0" 
                                                    Text="{Binding Title}" 
-                                                   FontSize="20" />
+                                                   FontSize="16" />
                                             <Button Grid.Column="1" 
                                                     Text="{Binding ButtonName}"
                                                     Command="{Binding ToggleDetailsCommand}" 
                                                     Margin="8,0" />
                                         </Grid>
                                         <Label Text="{Binding Content}" 
-                                               IsVisible="{Binding ShowDetails, Converter={StaticResource converters:BoolToIsVisible}}"
+                                               IsVisible="{Binding ShowDetails, Converter={StaticResource BoolToIsVisible}}"
                                                 FontAttributes="Italic" 
-                                               FontSize="18" 
+                                               FontSize="16" 
                                                TextColor="Gray" />
                                     </VerticalStackLayout>
                                 </Grid>

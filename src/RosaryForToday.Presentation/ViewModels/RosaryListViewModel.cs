@@ -7,6 +7,7 @@ using RosaryForToday.Models.Queries;
 using RosaryForToday.Presentation.Mappers;
 using SimpleCqrs;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows.Input;
 
 namespace RosaryForToday.Presentation.ViewModels;
