@@ -4,9 +4,8 @@ using Android.Appwidget;
 using Android.Content;
 using Android.Widget;
 using Android.OS;
-using RosaryForToday.UI;
 
-namespace RosaryForToday.Presentation.Platforms.Android
+namespace RosaryForToday.UI.Platforms.Android
 {
     [BroadcastReceiver(Enabled = true, Exported = true, Label = "RosaryForToday Widget")]
     [IntentFilter(new[] { "android.appwidget.action.APPWIDGET_UPDATE" })]
@@ -20,7 +19,7 @@ namespace RosaryForToday.Presentation.Platforms.Android
 
             foreach (var appWidgetId in appWidgetIds!)
             {
-                UpdateWidget(context!, appWidgetManager!, appWidgetId, $"Rosary: {DateTime.Now:T}");
+                UpdateWidget(context!, appWidgetManager!, appWidgetId);
             }
         }
 
@@ -35,35 +34,34 @@ namespace RosaryForToday.Presentation.Platforms.Android
                 var ids = appWidgetManager!.GetAppWidgetIds(component);
                 foreach (var id in ids!)
                 {
-                    UpdateWidget(context!, appWidgetManager!, id, $"Refreshed: {DateTime.Now:T}");
+                    UpdateWidget(context!, appWidgetManager!, id);
                 }
             }
         }
 
-        static void UpdateWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, string text)
+        static void UpdateWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId)
         {
             var views = new RemoteViews(context.PackageName, Resource.Layout.rosary_today_widget_layout);
-            views.SetTextViewText(Resource.Id.widgetText, text);
+
+            // Ustaw adapter dla ListView
+            var intent = new Intent(context, typeof(RosaryWidgetRemoteViewsService));
+            intent.PutExtra(AppWidgetManager.ExtraAppwidgetId, appWidgetId);
+            views.SetRemoteAdapter(Resource.Id.rosaryListView, intent);
+            //views.SetEmptyListView(Resource.Id.rosaryListView, Resource.Id.widgetTitle);
 
             // Click opens MainActivity
-            var intent = new Intent(context, typeof(MainActivity));
-            intent.SetAction(Intent.ActionMain);
-            intent.AddCategory(Intent.CategoryLauncher);
+            var mainIntent = new Intent(context, typeof(MainActivity));
+            mainIntent.SetAction(Intent.ActionMain);
+            mainIntent.AddCategory(Intent.CategoryLauncher);
 
             var flags = Build.VERSION.SdkInt >= BuildVersionCodes.S
                 ? PendingIntentFlags.Immutable | PendingIntentFlags.UpdateCurrent
                 : PendingIntentFlags.UpdateCurrent;
 
-
-            var pending = PendingIntent.GetActivity(context, 0, intent, flags);
+            var pending = PendingIntent.GetActivity(context, 0, mainIntent, flags);
             views.SetOnClickPendingIntent(Resource.Id.widgetButton, pending);
 
-            // Optional: click on the whole widget to trigger a refresh broadcast
-            var refreshIntent = new Intent(context, typeof(RosaryTodayAppWidgetProvider));
-            refreshIntent.SetAction(ActionRefresh);
-            var refreshPending = PendingIntent.GetBroadcast(context, 1, refreshIntent, flags);
-            views.SetOnClickPendingIntent(Resource.Id.widgetText, refreshPending);
-
+            appWidgetManager.NotifyAppWidgetViewDataChanged(appWidgetId, Resource.Id.rosaryListView);
             appWidgetManager.UpdateAppWidget(appWidgetId, views);
         }
     }
