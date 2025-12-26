@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace RosaryForToday.Presentation.ViewModels;
 
-public class RosaryListViewModel(IRosaryDbQuery _dbQuery, ISimpleMediator _mediator) : BindableObject
+public class RosaryListViewModel(ISimpleMediator _mediator) : BindableObject
 {
     private string? _errorMessage;
     private bool _showAllItems = false;
@@ -66,9 +66,8 @@ public class RosaryListViewModel(IRosaryDbQuery _dbQuery, ISimpleMediator _media
     private async Task LoadTodayRosariesAsync()
     {
         // Use query handlers instead of calling the DB query directly
-        var todayHandler = new GetRosaryForTodayQueryHandler(_dbQuery);
         var todayQuery = new GetRosaryForTodayQuery { Language = LanguageTypeEnum.Polish };
-        RosaryDto? todayResult = await todayHandler.HandleAsync(todayQuery);
+        RosaryDto? todayResult = await _mediator.GetQueryAsync(todayQuery);
 
         if (todayResult is null)
         {
@@ -91,9 +90,8 @@ public class RosaryListViewModel(IRosaryDbQuery _dbQuery, ISimpleMediator _media
     private async Task LoadAllRosariesAsync()
     {
         // Load all rosaries into AllItems using GetAllRosariesQueryHandler
-        GetAllRosariesQueryHandler allHandler = new(_dbQuery);
         GetAllRosariesQuery allQuery = new() { Language = LanguageTypeEnum.Polish };
-        IEnumerable<RosaryDto> allResults = await allHandler.HandleAsync(allQuery);
+        IEnumerable<RosaryDto> allResults = await _mediator.GetQueryAsync(allQuery);
 
         AllItems.Clear();
         foreach (var rosary in allResults)

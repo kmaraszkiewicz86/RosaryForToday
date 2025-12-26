@@ -44,7 +44,7 @@ public static class DependencyExtension
         services.AddScoped<IRosaryDbQuery, RosaryDbQuery>();
 
         // Register SimpleCqrs mediator using the application handlers assembly
-        services.AddScoped<ISimpleMediator>(scope => new SimpleMediator(typeof(GetRosaryForTodayQueryHandler).Assembly));
+        services.ConfigureSimpleCqrs(typeof(GetRosaryForTodayQueryHandler).Assembly);
 
         // If you use AutoMapper, register here (optional)
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
