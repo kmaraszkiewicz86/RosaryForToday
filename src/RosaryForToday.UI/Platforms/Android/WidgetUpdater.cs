@@ -2,6 +2,7 @@ using Android.App;
 using Android.Appwidget;
 using Android.Content;
 using Android.Widget;
+using RosaryForToday.UI.Platforms.Android;
 using AndroidApplication = Android.App.Application;
 
 namespace RosaryForToday.Presentation.Platforms.Android
@@ -19,7 +20,7 @@ namespace RosaryForToday.Presentation.Platforms.Android
             foreach (var id in ids!)
             {
                 var views = new RemoteViews(context.PackageName, Resource.Layout.rosary_today_widget_layout);
-                views.SetTextViewText(Resource.Id.widgetText, text);
+                views.SetTextViewText(Resource.Id.widgetTitle, text);
                 appWidgetManager.UpdateAppWidget(id, views);
             }
         }

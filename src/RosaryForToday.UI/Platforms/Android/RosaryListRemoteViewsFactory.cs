@@ -38,13 +38,16 @@ namespace RosaryForToday.UI.Platforms.Android
             if (position < 0 || position >= _rosaryList.Count)
                 return null!;
 
-            var views = new RemoteViews(_context.PackageName, Resource.Layout.rosary_today_widget_layout);
-            views.SetTextViewText(Resource.Id.rosaryListView, _rosaryList[position]);
+            // Zwróciæ layout dla JEDNEGO wiersza listy
+            RemoteViews views = new(_context.PackageName, Resource.Layout.rosary_today_widget_list_item);
+
+            // Ustawiæ tekst dla bie¿¹cego elementu
+            views.SetTextViewText(Resource.Id.rosaryItemName, _rosaryList[position]);
 
             // Opcjonalnie: klik na element
             var intent = new Intent();
             intent.PutExtra("rosary_name", _rosaryList[position]);
-            views.SetOnClickFillInIntent(Resource.Id.rosaryListView, intent);
+            views.SetOnClickFillInIntent(Resource.Id.rosaryItemName, intent);
 
             return views;
         }

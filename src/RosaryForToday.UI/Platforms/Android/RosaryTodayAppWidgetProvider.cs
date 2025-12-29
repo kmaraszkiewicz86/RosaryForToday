@@ -9,9 +9,10 @@ namespace RosaryForToday.UI.Platforms.Android
 {
     [BroadcastReceiver(Enabled = true, Exported = true, Label = "RosaryForToday Widget")]
     [IntentFilter(new[] { "android.appwidget.action.APPWIDGET_UPDATE" })]
+    [IntentFilter(new[] { "com.companyname.rosaryfortoday.ui.ACTION_REFRESH_WIDGET" })]
     public class RosaryTodayAppWidgetProvider : AppWidgetProvider
     {
-        public const string ActionRefresh = "RosaryForToday.ACTION_REFRESH_WIDGET";
+        public const string ActionRefresh = "com.companyname.rosaryfortoday.ui.ACTION_REFRESH_WIDGET";
 
         public override void OnUpdate(Context? context, AppWidgetManager? appWidgetManager, int[]? appWidgetIds)
         {
@@ -47,19 +48,20 @@ namespace RosaryForToday.UI.Platforms.Android
             var intent = new Intent(context, typeof(RosaryWidgetRemoteViewsService));
             intent.PutExtra(AppWidgetManager.ExtraAppwidgetId, appWidgetId);
             views.SetRemoteAdapter(Resource.Id.rosaryListView, intent);
-            //views.SetEmptyListView(Resource.Id.rosaryListView, Resource.Id.widgetTitle);
-
-            // Click opens MainActivity
-            var mainIntent = new Intent(context, typeof(MainActivity));
-            mainIntent.SetAction(Intent.ActionMain);
-            mainIntent.AddCategory(Intent.CategoryLauncher);
 
             var flags = Build.VERSION.SdkInt >= BuildVersionCodes.S
                 ? PendingIntentFlags.Immutable | PendingIntentFlags.UpdateCurrent
                 : PendingIntentFlags.UpdateCurrent;
 
-            var pending = PendingIntent.GetActivity(context, 0, mainIntent, flags);
+
+            var pending = PendingIntent.GetActivity(context, 0, intent, flags);
             views.SetOnClickPendingIntent(Resource.Id.widgetButton, pending);
+
+            // Optional: click on the whole widget to trigger a refresh broadcast
+            var refreshIntent = new Intent(context, typeof(RosaryTodayAppWidgetProvider));
+            refreshIntent.SetAction(ActionRefresh);
+            var refreshPending = PendingIntent.GetBroadcast(context, 1, refreshIntent, flags);
+            views.SetOnClickPendingIntent(Resource.Id.widgetTitle, refreshPending);
 
             appWidgetManager.NotifyAppWidgetViewDataChanged(appWidgetId, Resource.Id.rosaryListView);
             appWidgetManager.UpdateAppWidget(appWidgetId, views);
