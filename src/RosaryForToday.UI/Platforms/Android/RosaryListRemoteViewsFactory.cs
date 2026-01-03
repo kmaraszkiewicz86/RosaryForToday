@@ -2,7 +2,7 @@ using Android.Content;
 using Android.Widget;
 using static Android.Widget.RemoteViewsService;
 
-namespace RosaryForToday.UI.Platforms.Android
+namespace RosaryForToday.UI
 {
     public class RosaryListRemoteViewsFactory : Java.Lang.Object, IRemoteViewsFactory
     {

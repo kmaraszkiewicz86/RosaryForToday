@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 	<application android:allowBackup="true" android:icon="@mipmap/appicon" android:roundIcon="@mipmap/appicon_round" android:supportsRtl="true">
 		<receiver
-			android:name="com.companyname.rosaryfortoday.ui.Platforms.Android.RosaryTodayAppWidgetProvider"
+			android:name="com.companyname.rosaryfortoday.ui.RosaryTodayAppWidgetProvider"
 			android:exported="true"
 			android:label="RosaryForToday Widget">
 			<intent-filter>
@@ -15,7 +15,7 @@
 		</receiver>
 
 		<service
-			android:name="com.companyname.rosaryfortoday.ui.Platforms.Android.RosaryWidgetRemoteViewsService"
+			android:name="com.companyname.rosaryfortoday.ui.RosaryWidgetRemoteViewsService"
 			android:exported="false"
 			android:permission="android.permission.BIND_REMOTEVIEWS" />
 	</application>

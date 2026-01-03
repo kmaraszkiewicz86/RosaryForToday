@@ -1,8 +1,7 @@
-using Android.App;
 using Android.Appwidget;
 using Android.Content;
 using Android.Widget;
-using RosaryForToday.UI.Platforms.Android;
+using RosaryForToday.UI;
 using AndroidApplication = Android.App.Application;
 
 namespace RosaryForToday.Presentation.Platforms.Android
