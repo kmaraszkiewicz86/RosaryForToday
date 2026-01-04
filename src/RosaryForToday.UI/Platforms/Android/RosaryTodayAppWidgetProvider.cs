@@ -87,7 +87,27 @@ namespace RosaryForToday.UI
                 ? PendingIntentFlags.Immutable | PendingIntentFlags.UpdateCurrent   
                 : PendingIntentFlags.UpdateCurrent;
 
-            // Intent startujacy aplikacje
+            // Intent odœwie¿aj¹cy wid¿et – u¿ywany przez przycisk
+            var refreshIntent = new Intent(context, typeof(RosaryTodayAppWidgetProvider));
+            refreshIntent.SetAction(ActionRefresh);
+
+            var refreshPending = PendingIntent.GetBroadcast(context, 0, refreshIntent, flags);
+
+            // Po klikniêciu PRZYCISKU odœwie¿ listê
+            views.SetOnClickPendingIntent(Resource.Id.widgetButton, refreshPending);
+
+            // Przycisk otwieraj¹cy aplikacjê
+            var openAppPending = CreateOpenAppPendingIntent(context, flags);
+            views.SetOnClickPendingIntent(Resource.Id.widgetOpenAppButton, openAppPending);
+
+            appWidgetManager.NotifyAppWidgetViewDataChanged(appWidgetId, Resource.Id.rosaryListView);
+            appWidgetManager.UpdateAppWidget(appWidgetId, views);
+
+            Log.Info("RosaryWidget", "Widget updated");
+        }
+
+        private static PendingIntent CreateOpenAppPendingIntent(Context context, PendingIntentFlags flags)
+        {
             var launchIntent = context.PackageManager?.GetLaunchIntentForPackage(context.PackageName);
             Log.Info("RosaryWidget", $"LaunchIntent from package manager is null? {launchIntent is null}");
 
@@ -102,22 +122,7 @@ namespace RosaryForToday.UI
             var pending = PendingIntent.GetActivity(context, 0, launchIntent, flags);
             Log.Info("RosaryWidget", $"PendingIntent created: {pending != null}");
 
-            views.SetOnClickPendingIntent(Resource.Id.widgetButton, pending);
-            Log.Info("RosaryWidget", "ClickPendingIntent set for widgetButton");
-
-            // Intent odœwie¿aj¹cy wid¿et – u¿ywany przez przycisk
-            var refreshIntent = new Intent(context, typeof(RosaryTodayAppWidgetProvider));
-            refreshIntent.SetAction(ActionRefresh);
-
-            var refreshPending = PendingIntent.GetBroadcast(context, 0, refreshIntent, flags);
-
-            // Po klikniêciu PRZYCISKU odœwie¿ listê
-            views.SetOnClickPendingIntent(Resource.Id.widgetButton, refreshPending);
-
-            appWidgetManager.NotifyAppWidgetViewDataChanged(appWidgetId, Resource.Id.rosaryListView);
-            appWidgetManager.UpdateAppWidget(appWidgetId, views);
-
-            Log.Info("RosaryWidget", "Widget updated");
+            return pending!;
         }
 
         private static void UpdateRosaryText(RemoteViews views)

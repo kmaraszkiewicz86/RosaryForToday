@@ -2,4 +2,5 @@
 <resources>
     <string name="widget_refresh_action_text">Odśwież</string>
     <string name="widget_open_app_message">Otwórz aplikację, aby skonfigurować widget</string>
+    <string name="widget_open_app_button_text">Otwórz aplikację</string>
 </resources>
