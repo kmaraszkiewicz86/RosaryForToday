@@ -5,7 +5,8 @@ namespace RosaryForToday.Domain.DbQueries;
 
 public interface IRosaryDbQuery
 {
-    Task<RosaryDto?> GetRosaryForDateAsync(LanguageTypeEnum language, CancellationToken ct = default);
+    Task<RosaryDto?> GetRosaryForTodayAsync(LanguageTypeEnum language, CancellationToken ct = default);
 
     Task<IEnumerable<RosaryDto>> GetAllRosariesExceptTodayAsync(LanguageTypeEnum language, CancellationToken ct = default);
+    string GetRosaryTitleForToday(LanguageTypeEnum language);
 }

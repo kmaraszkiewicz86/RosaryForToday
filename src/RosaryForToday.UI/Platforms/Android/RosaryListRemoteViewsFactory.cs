@@ -1,5 +1,8 @@
 using Android.Content;
 using Android.Widget;
+using RosaryForToday.Models.Enums;
+using RosaryForToday.Models.Queries;
+using SimpleCqrs;
 using static Android.Widget.RemoteViewsService;
 
 namespace RosaryForToday.UI
@@ -24,11 +27,23 @@ namespace RosaryForToday.UI
         public void OnDataSetChanged()
         {
             _rosaryList.Clear();
-            _rosaryList.Add("Tajemnica 1");
-            _rosaryList.Add("Tajemnica 2");
-            _rosaryList.Add("Tajemnica 3");
-            _rosaryList.Add("Tajemnica 4");
-            _rosaryList.Add("Tajemnica 5");
+
+            var mediator = ServiceLocator.Services?.GetService<ISimpleMediator>();
+            if (mediator != null)
+            {
+                var rosaryInfo = mediator.GetQueryAsync(new GetRosaryForTodayQuery { Language = LanguageTypeEnum.Polish })
+                    .GetAwaiter()
+                    .GetResult();
+
+                if (rosaryInfo is null || !rosaryInfo.RosaryReflections.Any())
+                    return;
+
+                _rosaryList.AddRange(rosaryInfo.RosaryReflections.Select(r => r.Title));
+            }
+            else
+            {
+                _rosaryList.Add(_context.GetString(Resource.String.widget_open_app_message));
+            }
         }
 
         public void OnDestroy() { }

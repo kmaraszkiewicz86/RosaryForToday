@@ -28,7 +28,10 @@ namespace RosaryForToday.UI
                 .AddViews()
                 .AddRequiredClasses();
 
-            return builder.Build();
+            MauiApp app =  builder.Build();
+            ServiceLocator.Services = app.Services;
+
+            return app;
         }
     }
 }

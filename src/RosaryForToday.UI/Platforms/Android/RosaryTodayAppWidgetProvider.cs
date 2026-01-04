@@ -5,8 +5,12 @@ using Android.OS;
 using Android.Runtime;
 using Android.Util;
 using Android.Widget;
+using RosaryForToday.Models.Enums;
+using RosaryForToday.Models.Queries;
 using RosaryForToday.UI.Platforms.Android;
+using SimpleCqrs;
 using System;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace RosaryForToday.UI
 {
@@ -20,7 +24,7 @@ namespace RosaryForToday.UI
 
         public override void OnUpdate(Context? context, AppWidgetManager? appWidgetManager, int[]? appWidgetIds)
         {
-            Log.Debug("RosaryWidget", $"OnUpdate called, ids length={appWidgetIds?.Length ?? 0}");
+            Log.Info("RosaryWidget", $"OnUpdate called, ids length={appWidgetIds?.Length ?? 0}");
 
             base.OnUpdate(context, appWidgetManager, appWidgetIds);
 
@@ -44,17 +48,17 @@ namespace RosaryForToday.UI
 
                 if (intent?.Action == ActionRefresh)
                 {
-                    Log.Debug("RosaryWidget", "ACTION_REFRESH received");
+                    Log.Info("RosaryWidget", "ACTION_REFRESH received");
 
                     var appWidgetManager = AppWidgetManager.GetInstance(context);
                     var component = new ComponentName(context!, Java.Lang.Class.FromType(typeof(RosaryTodayAppWidgetProvider)));
                     var ids = appWidgetManager!.GetAppWidgetIds(component);
 
-                    Log.Debug("RosaryWidget", $"Widget count={ids?.Length ?? 0}");
+                    Log.Info("RosaryWidget", $"Widget count={ids?.Length ?? 0}");
 
                     foreach (var id in ids!)
                     {
-                        Log.Debug("RosaryWidget", $"Updating widget id={id}");
+                        Log.Info("RosaryWidget", $"Updating widget id={id}");
                         UpdateWidget(context!, appWidgetManager!, id);
                     }
                 }
@@ -66,11 +70,15 @@ namespace RosaryForToday.UI
             }
         }
 
-        static void UpdateWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId)
+        private static void UpdateWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId)
         {
+            Log.Info("RosaryWidget", $"UpdateWidget appWidgetId={appWidgetId}");
+
             var views = new RemoteViews(context.PackageName, Resource.Layout.rosary_today_widget_layout);
 
-            // Lista
+            UpdateRosaryText(views);
+
+            // Lista elementów rozwa¿añ ró¿añcowych
             var serviceIntent = new Intent(context, typeof(RosaryWidgetRemoteViewsService));
             serviceIntent.PutExtra(AppWidgetManager.ExtraAppwidgetId, appWidgetId);
             views.SetRemoteAdapter(Resource.Id.rosaryListView, serviceIntent);
@@ -81,32 +89,46 @@ namespace RosaryForToday.UI
 
             // Intent startujacy aplikacje
             var launchIntent = context.PackageManager?.GetLaunchIntentForPackage(context.PackageName);
-            Log.Debug("RosaryWidget", $"LaunchIntent from package manager is null? {launchIntent is null}");
+            Log.Info("RosaryWidget", $"LaunchIntent from package manager is null? {launchIntent is null}");
 
             if (launchIntent is null)
             {
                 launchIntent = new Intent(context, typeof(MainActivity));
                 launchIntent.AddCategory(Intent.CategoryLauncher);
                 launchIntent.SetAction(Intent.ActionMain);
-                Log.Debug("RosaryWidget", "Using explicit MainActivity launch intent");
+                Log.Info("RosaryWidget", "Using explicit MainActivity launch intent");
             }
 
             var pending = PendingIntent.GetActivity(context, 0, launchIntent, flags);
-            Log.Debug("RosaryWidget", $"PendingIntent created: {pending != null}");
+            Log.Info("RosaryWidget", $"PendingIntent created: {pending != null}");
 
             views.SetOnClickPendingIntent(Resource.Id.widgetButton, pending);
-            Log.Debug("RosaryWidget", "ClickPendingIntent set for widgetButton");
+            Log.Info("RosaryWidget", "ClickPendingIntent set for widgetButton");
 
-            // Refresh po kliknieciu tytulu
+            // Intent odœwie¿aj¹cy wid¿et – u¿ywany przez przycisk
             var refreshIntent = new Intent(context, typeof(RosaryTodayAppWidgetProvider));
             refreshIntent.SetAction(ActionRefresh);
-            var refreshPending = PendingIntent.GetBroadcast(context, 1, refreshIntent, flags);
-            views.SetOnClickPendingIntent(Resource.Id.widgetTitle, refreshPending);
+
+            var refreshPending = PendingIntent.GetBroadcast(context, 0, refreshIntent, flags);
+
+            // Po klikniêciu PRZYCISKU odœwie¿ listê
+            views.SetOnClickPendingIntent(Resource.Id.widgetButton, refreshPending);
 
             appWidgetManager.NotifyAppWidgetViewDataChanged(appWidgetId, Resource.Id.rosaryListView);
             appWidgetManager.UpdateAppWidget(appWidgetId, views);
 
-            Log.Debug("RosaryWidget", "Widget updated");
+            Log.Info("RosaryWidget", "Widget updated");
+        }
+
+        private static void UpdateRosaryText(RemoteViews views)
+        {
+            var mediator = ServiceLocator.Services?.GetService<ISimpleMediator>();
+
+            if (mediator is null)
+                return;
+
+            string text = mediator.GetQuery(new GetRosaryTitleForTodayQuery { Language = LanguageTypeEnum.Polish });
+            views.SetTextViewText(Resource.Id.widgetTitle, text);
         }
     }
 }

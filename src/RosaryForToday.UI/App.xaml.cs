@@ -1,7 +1,4 @@
 ﻿using RosaryForToday.Presentation.Helpers;
-#if ANDROID
-using RosaryForToday.Presentation.Platforms.Android;
-#endif
 
 namespace RosaryForToday.UI
 {
@@ -21,7 +18,6 @@ namespace RosaryForToday.UI
             };
 
 #if ANDROID
-            WidgetUpdater.UpdateAll("Widget Initialized");
             Android.Runtime.AndroidEnvironment.UnhandledExceptionRaiser += (s, e) =>
             {
                 CrashLogService.LogException(e.Exception, "AndroidEnvironment");

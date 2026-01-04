@@ -16,7 +16,7 @@ public class RosaryDbQuery : IRosaryDbQuery
         _db = db;
     }
 
-    public async Task<RosaryDto?> GetRosaryForDateAsync(LanguageTypeEnum language, CancellationToken ct = default)
+    public async Task<RosaryDto?> GetRosaryForTodayAsync(LanguageTypeEnum language, CancellationToken ct = default)
     {
         DateTime date = DateTime.UtcNow;
         string dayNameText = GetPolishDayName(date.DayOfWeek);
@@ -110,6 +110,18 @@ public class RosaryDbQuery : IRosaryDbQuery
         }
 
         return results;
+    }
+
+    public string GetRosaryTitleForToday(LanguageTypeEnum language)
+    {
+        DateTime date = DateTime.UtcNow;
+        string dayNameText = GetPolishDayName(date.DayOfWeek);
+
+        return _db.RosaryDaySchedules
+            .Include(s => s.RosaryType)
+            .Where(s => s.DayOfWeek == date.DayOfWeek && s.LanguageId == (int)language)
+            .Select(s => s.RosaryType.Name)
+            .FirstOrDefault() ?? string.Empty;
     }
 
     private string GetPolishDayName(DayOfWeek dayOfWeek)
