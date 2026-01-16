@@ -5,6 +5,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Util;
 using Android.Widget;
+using RosaryForToday.Models.Dtos;
 using RosaryForToday.Models.Enums;
 using RosaryForToday.Models.Queries;
 using RosaryForToday.UI.Platforms.Android;
@@ -132,8 +133,8 @@ namespace RosaryForToday.UI
             if (mediator is null)
                 return;
 
-            string text = mediator.GetQuery(new GetRosaryTitleForTodayQuery { Language = LanguageTypeEnum.Polish });
-            views.SetTextViewText(Resource.Id.widgetTitle, text);
+            RosaryTitleDto model = mediator.GetQuery(new GetRosaryTitleForTodayQuery { Language = LanguageTypeEnum.Polish });
+            views.SetTextViewText(Resource.Id.widgetTitle, $"{model.Title} ({model.DayOfWeek})");
         }
     }
 }

@@ -4,6 +4,7 @@ using RosaryForToday.Domain.Entities;
 using RosaryForToday.Infrastructure.Data;
 using RosaryForToday.Models.Dtos;
 using RosaryForToday.Models.Enums;
+using System;
 
 namespace RosaryForToday.Infrastructure.DbQueries;
 
@@ -85,7 +86,7 @@ public class RosaryDbQuery : IRosaryDbQuery
 
             List<string> dayNameTexts = new();
 
-            foreach(var dayOfWeek in dayOfWeeks)
+            foreach (var dayOfWeek in dayOfWeeks)
             {
                 dayNameTexts.Add(GetPolishDayName(dayOfWeek));
             }
@@ -112,16 +113,25 @@ public class RosaryDbQuery : IRosaryDbQuery
         return results;
     }
 
-    public string GetRosaryTitleForToday(LanguageTypeEnum language)
+    public RosaryTitleDto GetRosaryTitleForToday(LanguageTypeEnum language)
     {
         DateTime date = DateTime.UtcNow;
-        string dayNameText = GetPolishDayName(date.DayOfWeek);
 
-        return _db.RosaryDaySchedules
+        RosaryTitleDto model = _db.RosaryDaySchedules
             .Include(s => s.RosaryType)
             .Where(s => s.DayOfWeek == date.DayOfWeek && s.LanguageId == (int)language)
-            .Select(s => s.RosaryType.Name)
-            .FirstOrDefault() ?? string.Empty;
+            .Select(s =>
+                new RosaryTitleDto
+                {
+                    Title = s.RosaryType.Name,
+                    DayOfWeek = s.DayOfWeek.ToString()
+                })
+            .FirstOrDefault()
+                ?? new RosaryTitleDto { Title = "", DayOfWeek = "Empty" };
+
+        model.DayOfWeek = GetPolishDayName(date.DayOfWeek);
+
+        return model;
     }
 
     private string GetPolishDayName(DayOfWeek dayOfWeek)
@@ -137,5 +147,14 @@ public class RosaryDbQuery : IRosaryDbQuery
             DayOfWeek.Sunday => "Niedziela",
             _ => dayOfWeek.ToString()
         };
+    }
+
+    private string GetPolishDayName(string dayOfWeek)
+    {
+        if (Enum.TryParse<DayOfWeek>(dayOfWeek, out var day))
+            return dayOfWeek;
+
+        return GetPolishDayName(day);
+
     }
 }

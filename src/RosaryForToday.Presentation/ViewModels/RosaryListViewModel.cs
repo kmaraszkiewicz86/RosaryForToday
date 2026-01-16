@@ -42,11 +42,11 @@ public class RosaryListViewModel(ISimpleMediator _mediator) : BindableObject
         }
     }
 
-    public ICommand RefreshCommand => new Command(async () => await RefreshAsync());
+    public ICommand RefreshCommand => new Command(async () => await RefreshAsync(_showAllItems));
     public ICommand ShowCrashLogCommand => new Command(async () => await OnShowCrashLogAsync());
 
-    public ICommand ShowTodayCommand => new Command(async () => await RefreshAsync());
-    public ICommand ShowAllCommand => new Command(async () => await RefreshAsync());
+    public ICommand ShowTodayCommand => new Command(async () => await RefreshAsync(false));
+    public ICommand ShowAllCommand => new Command(async () => await RefreshAsync(true));
 
     public async Task LoadAsync()
     {
@@ -112,10 +112,12 @@ public class RosaryListViewModel(ISimpleMediator _mediator) : BindableObject
         await Shell.Current.GoToAsync("///CrashLog");
     }
 
-    private async Task RefreshAsync()
+    private async Task RefreshAsync(bool showAllItems)
     {
         Items.Clear();
         AllItems.Clear();
         await LoadAsync();
+
+        ShowAllItems = showAllItems;
     }
 }
