@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
@@ -21,7 +21,7 @@
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>RosaryForToday.UI</ApplicationTitle>
+		<ApplicationTitle>Rosary for Today</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>pl.kmaraszkiewicz86.rosaryfortoday</ApplicationId>
