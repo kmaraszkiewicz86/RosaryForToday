@@ -24,7 +24,7 @@
 		<ApplicationTitle>RosaryForToday.UI</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.rosaryfortoday.ui</ApplicationId>
+		<ApplicationId>pl.kmaraszkiewicz86.rosaryfortoday</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
