@@ -34,7 +34,7 @@ public static class DependencyExtension
     }
 
     /// <summary>
-    /// Registers application-level services including database queries, mediator, and AutoMapper into the dependency injection container.
+    /// Registers application-level services including database queries and mediator into the dependency injection container.
     /// </summary>
     /// <param name="services">The service collection to which the application services will be added.</param>
     /// <returns>The updated service collection containing the registered application services.</returns>
@@ -45,9 +45,6 @@ public static class DependencyExtension
 
         // Register SimpleCqrs mediator using the application handlers assembly
         services.ConfigureSimpleCqrs(typeof(GetRosaryForTodayQueryHandler).Assembly);
-
-        // If you use AutoMapper, register here (optional)
-        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         return services;
     }

@@ -4,6 +4,7 @@
              xmlns:converters="clr-namespace:RosaryForToday.Presentation.Converters"
              x:Class="RosaryForToday.Presentation.Views.RosaryListView"
              x:Name="Root"
+             SafeAreaEdges="Container"
              Title="Różanniec na dzisiaj">
 
     <ContentPage.ToolbarItems>
