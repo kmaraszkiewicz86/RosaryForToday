@@ -9,7 +9,7 @@
             <ScrollView>
                 <Label Text="{Binding LogContent}"
                        FontSize="14"
-                       TextColor="White"
+                       TextColor="{AppThemeBinding Light=Black, Dark=White}"
                        LineBreakMode="WordWrap" />
             </ScrollView>
         </Grid>
